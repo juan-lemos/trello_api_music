@@ -85,6 +85,7 @@ async function createTrelloBoard() {
       }
     }
   }
+  console.log("Todo ha sido creado");
 }
 
 createTrelloBoard();
