@@ -1,26 +1,15 @@
-const fs = require("fs");
 const utils = require("./utils");
+const { getDecadesWithAlbums } = require("./readAlbums");
+require("dotenv").config();
 const trelloApiUrl = "api.trello.com";
 const spotifyApiUrl = "api.spotify.com";
+const trelloApiKey = process.env.TRELLO_API_KEY;
+const trelloApiToken = process.env.TRELLO_API_TOKEN;
+const spotifyToken = process.env.SPOTIFY_TOKEN;
 
-var data = "";
-try {
-  data = fs.readFileSync("./discography.txt", "utf8");
-} catch (err) {
-  console.error(err);
-}
+const decadesAlbum = getDecadesWithAlbums();
 
-const albums = data.trim().split("\n").sort();
-
-const decadesAlbum = albums.reduce((prevValue, album) => {
-  if (!prevValue[album.substring(0, 3) + "0s"]) {
-    prevValue[album.substring(0, 3) + "0s"] = [];
-  }
-  prevValue[album.substring(0, 3) + "0s"].push(album);
-  return prevValue;
-}, {});
-
-async function doSomethingUseful() {
+async function createTrelloBoard() {
   const board = await utils.doRequest(
     {
       hostname: trelloApiUrl,
@@ -98,4 +87,4 @@ async function doSomethingUseful() {
   }
 }
 
-doSomethingUseful();
+createTrelloBoard();
